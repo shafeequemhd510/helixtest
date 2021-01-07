@@ -38,6 +38,8 @@ class _HomePageState extends State<HomePage> {
   List<GetAllRegionResponse> fifth=[];
   List<GetAllRegionResponse> sixth=[];
   List<GetAllRegionResponse> array=[];
+
+  bool loader= false;
   @override
   void initState() {
 
@@ -74,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       drawer: MyDrawer(),
-      body:
+      body:loader?Center(child: CircularProgressIndicator(),):
       Padding(
         padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height*.02),
         child: Container(
@@ -103,6 +105,9 @@ class _HomePageState extends State<HomePage> {
 
 
   sentRequestGetFavDoc() async {
+    setState(() {
+      loader=true;
+    });
 
     String url = "https://restcountries.eu/rest/v2/all";
 
@@ -139,6 +144,7 @@ class _HomePageState extends State<HomePage> {
        uniqueCompanyNames = getFavRegion.map<String>(
               (c) => (c.region ))
           .toSet().toList();
+       loader=false;
 //       contries.addAll(getFavRegion.map((e) => e.region))
       first = getFavRegion.where((element) => element.region==uniqueCompanyNames[0]).toList();
       second = getFavRegion.where((element) => element.region==uniqueCompanyNames[1]).toList();
